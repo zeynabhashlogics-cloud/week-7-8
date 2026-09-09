@@ -437,7 +437,6 @@ export default function TaskPage() {
 
      </div>
       </div>
-
           <div className="flex gap-6 justify-center items-start mt-8">
 
             <div className="w-[385px] bg-[#91a1c9] shadow-lg rounded-lg p-10 text-center">
