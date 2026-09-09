@@ -15,41 +15,33 @@ router.get("/", authMiddleware, async (req, res) => {
   try {
     const { search, status, priority } = req.query;
 
-    const tasks = await prisma.tasks.findMany({
-      where: {
-        userId: req.user.id,
-
-        ...(search
-          ? {
-              title: {
-                contains: String(search),
-                mode: "insensitive",
-              },
-            }
-          : {}),
-
-        ...(status
-          ? {
-              status: String(status),
-            }
-          : {}),
-
-        ...(priority
-          ? {
-              priority: String(priority),
-            }
-          
-          : {}),
-      },
-
-      orderBy: {
-        id: "asc",
-      },
-    });
-
-    res.json(tasks);
-
-  } 
+   const where =
+   {
+    userId:req.user.id,
+   };
+  if (search)
+  {
+    where.title ={
+      contains: String(search),
+      mode: "insensitive",
+    };
+  }
+   if (status)
+  {
+  where.status = String(status);
+  }
+ if (priority)
+  {
+  where.priority = String(priority);
+  }
+ const tasks = await prisma.tasks.findMany({
+  where,
+  orderBy:{
+    id: "asc",
+  },
+  });
+  res.json(tasks);
+}
   catch (error) {
 
     console.error(error);
@@ -89,15 +81,10 @@ router.post("/", authMiddleware, async (req, res) => {
     const task = await prisma.tasks.create({
       data: {
         title: title.trim(),
-
         description: description?.trim() || null,
-
         status: status.trim(),
-
         priority: priority.trim(),
-
         dueDate: dueDate ? new Date(dueDate) : null,
-
         userId: req.user.id,
       },
     });
@@ -150,11 +137,7 @@ router.put("/:id", authMiddleware, async (req, res) => {
       });
     }
 
-    if (
-
-
-
-      priority !== undefined &&
+    if ( priority !== undefined &&
       !priorities.includes(priority.trim())
     ) {
       return res.status(400).json({
@@ -166,7 +149,6 @@ router.put("/:id", authMiddleware, async (req, res) => {
       where: {
         id,
       },
-
       data: {
         ...(title !== undefined && {
           title: title.trim(),
