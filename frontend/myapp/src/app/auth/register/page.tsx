@@ -111,7 +111,7 @@ export default function RegisterPage() {
           onSubmit={handleRegister}
           className="mt-6 space-y-5">
 
-         // 2. allows us to enter our name
+        
           <div>
             <label
               htmlFor="name"
@@ -129,7 +129,6 @@ export default function RegisterPage() {
               className="mt-1 w-full rounded-md border border-gray-300 px-4 py-2.5"/>
           </div>
 
-          // 3. allows us to enter our email
           <div>
             <label
               htmlFor="email"
@@ -148,7 +147,6 @@ export default function RegisterPage() {
               py-2.5"/>
           </div>
 
-         // 4. allows us to enter passowrd in the form
           <div>
             <label
               htmlFor="password"

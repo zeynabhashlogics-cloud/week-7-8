@@ -57,7 +57,8 @@ router.post("/", authMiddleware, async (req, res) => {
   try {
     const { title,description,status,priority,dueDate,} = req.body;
 
-    if (!title || !status || !priority) {
+    if (!title || !status || !priority) 
+    {
       return res.status(400).json({
         message: "Title, status, and priority are required",
       });
@@ -66,13 +67,15 @@ router.post("/", authMiddleware, async (req, res) => {
     const statuses = ["pending", "completed"];
     const priorities = ["low", "medium", "high"];
 
-    if (!statuses.includes(status.trim())) {
+    if (!statuses.includes(status.trim())) 
+    {
       return res.status(400).json({
         message: "Status must be pending or completed",
       });
     }
 
-    if (!priorities.includes(priority.trim())) {
+    if (!priorities.includes(priority.trim()))
+   {
       return res.status(400).json({
         message: "Priority must be low, medium, or high",
       });
@@ -104,7 +107,8 @@ router.put("/:id", authMiddleware, async (req, res) => {
   try {
     const id = Number(req.params.id);
 
-    if (Number.isNaN(id)) {
+    if (Number.isNaN(id)) 
+    {
       return res.status(400).json({
         message: "Invalid task ID",
       });
@@ -119,7 +123,8 @@ router.put("/:id", authMiddleware, async (req, res) => {
     });
 
     
-    if (!task || task.userId !== req.user.id) {
+    if (!task || task.userId !== req.user.id)
+     {
       return res.status(404).json({
         message: "Task not found",
       });
@@ -128,18 +133,15 @@ router.put("/:id", authMiddleware, async (req, res) => {
     const statuses = ["pending", "completed"];
     const priorities = ["low", "medium", "high"];
 
-    if (
-      status !== undefined &&
-      !statuses.includes(status.trim())
-    ) {
+    if (status !== undefined && !statuses.includes(status.trim()) ) 
+      {
       return res.status(400).json({
         message: "Status must be pending or completed",
       });
     }
 
-    if ( priority !== undefined &&
-      !priorities.includes(priority.trim())
-    ) {
+    if ( priority !== undefined && !priorities.includes(priority.trim()))
+       {
       return res.status(400).json({
         message: "Priority must be low, medium, or high",
       });
@@ -147,17 +149,14 @@ router.put("/:id", authMiddleware, async (req, res) => {
 
     const updated = await prisma.tasks.update({
       where: {
-        id,
-      },
+        id,},
       data: {
         ...(title !== undefined && {
           title: title.trim(),
         }),
-
         ...(description !== undefined && {
           description: description.trim() || null,
         }),
-
         ...(status !== undefined && {
           status: status.trim(),
         }),
@@ -176,7 +175,9 @@ router.put("/:id", authMiddleware, async (req, res) => {
 
     res.status(200).json(updated);
 
-  } catch (error) {
+  } 
+  catch (error) 
+  {
     console.error(error);
 
     res.status(500).json({
