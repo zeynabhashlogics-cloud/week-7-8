@@ -7,6 +7,7 @@ import { useRouter } from "next/navigation";
 export default function RegisterPage() {
   const router = useRouter();
 
+  // 1.react states for entering our info on the registration form
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -20,7 +21,7 @@ export default function RegisterPage() {
 
     setError("");
     setSuccess("");
-
+// before sending it to the backend the frontend validation happens here
     
     if (!name.trim() || !email.trim() || !password) {
       setError("Name, email, and password are required");
@@ -41,6 +42,7 @@ export default function RegisterPage() {
     setLoading(true);
 
     try {
+      // 5. user submits the form and data is sent to backend post here
       const response = await fetch(
         `${process.env.NEXT_PUBLIC_API_URL}/auth/register`,
         {
@@ -99,21 +101,21 @@ export default function RegisterPage() {
         )}
 
         {success && (
-          <div className="mt-5 rounded-md bg-green-100 px-4 py-3 text-sm text-green-700">
+          <div className="mt-5 rounded-md bg-green-100 px-4 py-3 text-sm 
+          text-green-700">
             {success}
           </div>
         )}
 
         <form
           onSubmit={handleRegister}
-          className="mt-6 space-y-5"
-        >
+          className="mt-6 space-y-5">
 
+         // 2. allows us to enter our name
           <div>
             <label
               htmlFor="name"
-              className="block text-sm font-medium text-gray-700"
-            >
+              className="block text-sm font-medium text-gray-700">
               Name
             </label>
 
@@ -124,15 +126,14 @@ export default function RegisterPage() {
               onChange={(e) => setName(e.target.value)}
               placeholder="Enter your name"
               autoComplete="name"
-              className="mt-1 w-full rounded-md border border-gray-300 px-4 py-2.5"
-            />
+              className="mt-1 w-full rounded-md border border-gray-300 px-4 py-2.5"/>
           </div>
 
+          // 3. allows us to enter our email
           <div>
             <label
               htmlFor="email"
-              className="block text-sm font-medium text-gray-700"
-            >
+              className="block text-sm font-medium text-gray-700">
               Email
             </label>
 
@@ -144,15 +145,14 @@ export default function RegisterPage() {
               placeholder="Enter your email"
               autoComplete="email"
               className="mt-1 w-full rounded-md border border-gray-300 px-4 
-              py-2.5"
-            />
+              py-2.5"/>
           </div>
 
+         // 4. allows us to enter passowrd in the form
           <div>
             <label
               htmlFor="password"
-              className="block text-sm font-medium text-gray-700"
-            >
+              className="block text-sm font-medium text-gray-700">
               Password
             </label>
 
@@ -163,16 +163,16 @@ export default function RegisterPage() {
               onChange={(e) => setPassword(e.target.value)}
               placeholder="At least 6 characters"
               autoComplete="new-password"
-              className="mt-1 w-full rounded-md border border-gray-300
-               px-4 py-2.5"
-            />
+              className="mt-1 w-full rounded-md border border-gray-300 px-4 py-2.5"/>
           </div>
 
           <button
             type="submit"
             disabled={loading}
-            className="w-full rounded-md bg-blue-600 px-4 py-2.5 font-medium text-white hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-50"
-          >
+            className="w-full rounded-md bg-blue-600 px-4 py-2.5 
+            font-medium text-white hover:bg-blue-700 
+            disabled:cursor-not-allowed disabled:opacity-50">
+
             {loading ? "Creating account..." : "Register"}
           </button>
 

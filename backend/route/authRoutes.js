@@ -123,7 +123,7 @@ router.post("/login", async (req, res) => {
       },
       process.env.JWT_SECRET,
       {
-        expiresIn: "8h",
+        expiresIn: "1h",
       }
     );
 
@@ -139,7 +139,8 @@ router.post("/login", async (req, res) => {
       user: safeUser,
     });
 
-  } catch (error) {
+  } 
+  catch (error) {
     console.error("LOGIN ERROR : ", error);
 
     return res.status(500).json({

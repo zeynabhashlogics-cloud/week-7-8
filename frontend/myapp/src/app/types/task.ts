@@ -1,13 +1,15 @@
 
-export type statustype = "completed" | "pending" ;
-export type prioritytype="low"|"high"|"medium";
+export type statustype = "completed" | "pending";
 
-export type Task =
-{
+export type prioritytype = "low" | "high" | "medium";
 
-      id :number;
-      status:statustype;
-      priority:prioritytype;
-      title:string;
-    
+export type Task = {
+  id: number;
+  title: string;
+  description: string | null;
+  status: statustype;
+  priority: prioritytype;
+  dueDate: string | null;
+  createdAt: string;
+  userId: number;
 };

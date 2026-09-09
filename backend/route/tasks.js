@@ -1,8 +1,7 @@
-
 import express from "express";
 import { PrismaClient } from "../generated/prisma/client";
 import { PrismaPg } from "@prisma/adapter-pg";
-import authMiddleware from "../middleware/authmiddleware.js";
+import authMiddleware from "../middleware/authMiddleware.js";
 
 const router = express.Router();
 
@@ -14,29 +13,57 @@ const prisma = new PrismaClient({ adapter });
 
 router.get("/", authMiddleware, async (req, res) => {
   try {
+    const { search, status, priority } = req.query;
+
     const tasks = await prisma.tasks.findMany({
       where: {
         userId: req.user.id,
+
+        ...(search
+          ? {
+              title: {
+                contains: String(search),
+                mode: "insensitive",
+              },
+            }
+          : {}),
+
+        ...(status
+          ? {
+              status: String(status),
+            }
+          : {}),
+
+        ...(priority
+          ? {
+              priority: String(priority),
+            }
+          
+          : {}),
       },
+
       orderBy: {
         id: "asc",
       },
     });
 
-    res.status(200).json(tasks);
+    res.json(tasks);
 
-  } catch (error) {
+  } 
+  catch (error) {
+
     console.error(error);
 
     res.status(500).json({
-      message: "Internal server error",
+      message: "Failed to fetch tasks.",
     });
   }
 });
 
+
 router.post("/", authMiddleware, async (req, res) => {
   try {
-    const { title, status, priority } = req.body;
+    const { title,description,status,priority,dueDate,} = req.body;
 
     if (!title || !status || !priority) {
       return res.status(400).json({
@@ -62,8 +89,15 @@ router.post("/", authMiddleware, async (req, res) => {
     const task = await prisma.tasks.create({
       data: {
         title: title.trim(),
+
+        description: description?.trim() || null,
+
         status: status.trim(),
+
         priority: priority.trim(),
+
+        dueDate: dueDate ? new Date(dueDate) : null,
+
         userId: req.user.id,
       },
     });
@@ -89,7 +123,7 @@ router.put("/:id", authMiddleware, async (req, res) => {
       });
     }
 
-    const { title, status, priority } = req.body;
+    const { title, description,status,priority,dueDate,} = req.body;
 
     const task = await prisma.tasks.findUnique({
       where: {
@@ -97,6 +131,7 @@ router.put("/:id", authMiddleware, async (req, res) => {
       },
     });
 
+    
     if (!task || task.userId !== req.user.id) {
       return res.status(404).json({
         message: "Task not found",
@@ -116,6 +151,9 @@ router.put("/:id", authMiddleware, async (req, res) => {
     }
 
     if (
+
+
+
       priority !== undefined &&
       !priorities.includes(priority.trim())
     ) {
@@ -128,15 +166,28 @@ router.put("/:id", authMiddleware, async (req, res) => {
       where: {
         id,
       },
+
       data: {
         ...(title !== undefined && {
           title: title.trim(),
         }),
+
+        ...(description !== undefined && {
+          description: description.trim() || null,
+        }),
+
         ...(status !== undefined && {
           status: status.trim(),
         }),
+
         ...(priority !== undefined && {
           priority: priority.trim(),
+        }),
+
+        ...(dueDate !== undefined && {
+          dueDate: dueDate
+            ? new Date(dueDate)
+            : null,
         }),
       },
     });
@@ -194,4 +245,3 @@ router.delete("/:id", authMiddleware, async (req, res) => {
 });
 
 export default router;
-

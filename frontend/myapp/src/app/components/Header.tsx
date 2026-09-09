@@ -32,22 +32,19 @@ export default function Header() {
         <div className="flex items-center gap-6">
           <Link
             href="/"
-            className="font-semibold hover:text-blue-700"
-          >
+            className="font-semibold hover:text-blue-700" >
             Home
           </Link>
 
           <Link
             href="/about"
-            className="font-semibold hover:text-blue-700"
-          >
+            className="font-semibold hover:text-blue-700">
             About
           </Link>
 
           <Link
             href="/tasks"
-            className="font-semibold hover:text-blue-700"
-          >
+            className="font-semibold hover:text-blue-700">
             Tasks
           </Link>
         </div>
@@ -55,8 +52,8 @@ export default function Header() {
         {isLoggedIn && (
           <button
             onClick={logout}
-            className="rounded-md bg-red-500 px-5 py-2 font-semibold text-white hover:bg-red-600"
-          >
+            className="rounded-md bg-red-500 px-5
+             py-2 font-semibold text-white hover:bg-red-600">
             Logout
           </button>
         )}

@@ -21,6 +21,9 @@ model tasks {
   title    String  @db.VarChar(255)
   status   String  @db.VarChar(20)
   priority String  @db.VarChar(20)
+  description String?
+  dueDate  DateTime?
+  createdAt DateTime @default(now())
 
   userId   Int
   user     user @relation(fields: [userId], references: [id])

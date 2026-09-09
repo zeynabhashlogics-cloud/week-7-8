@@ -1,4 +1,3 @@
-
 import "dotenv/config";
 
 import bcrypt from "bcrypt";
@@ -12,7 +11,6 @@ const adapter = new PrismaPg({
 const prisma = new PrismaClient({ adapter });
 
 async function main() {
-
   await prisma.tasks.deleteMany();
   await prisma.user.deleteMany();
 
@@ -30,20 +28,26 @@ async function main() {
     data: [
       {
         title: "Learn Prisma",
+        Description: "Learn Prisma models, migrations, and queries.",
         status: "pending",
         priority: "high",
+        dueDate: new Date("2026-09-15"),
         userId: user.id,
       },
       {
         title: "Build API",
+        Description: "Build and test the task management API.",
         status: "pending",
         priority: "medium",
+        dueDate: new Date("2026-09-18"),
         userId: user.id,
       },
       {
         title: "Test database",
+        Description: "Test database operations and relationships.",
         status: "completed",
         priority: "low",
+        dueDate: new Date("2026-09-10"),
         userId: user.id,
       },
     ],
@@ -60,4 +64,3 @@ main()
   .finally(async () => {
     await prisma.$disconnect();
   });
-

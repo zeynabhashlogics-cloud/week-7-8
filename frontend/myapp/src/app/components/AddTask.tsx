@@ -10,6 +10,8 @@ type Props = {
 
 export default function AddTask({ Added }: Props) {
   const [title, setTitle] = useState("");
+  const [description, setDescription] = useState("");
+  const [dueDate, setDueDate] = useState("");
 
   const [priority, setPriority] = useState<prioritytype | "">("");
   const [status, setStatus] = useState<statustype | "">("");
@@ -31,24 +33,28 @@ export default function AddTask({ Added }: Props) {
     setApiError("");
     setSuccessMessage("");
 
-    if (!title.trim()) {
+    if (!title.trim()) 
+    {
       setTitleError("Title is required");
       return;
     }
 
-    if (!["low", "medium", "high"].includes(priority)) {
+    if (!["low", "medium", "high"].includes(priority)) 
+    {
       setPrioError("Invalid priority");
       return;
     }
 
-    if (!["pending", "completed"].includes(status)) {
+    if (!["pending", "completed"].includes(status)) 
+    {
       setStatusError("Invalid status");
       return;
     }
 
     const token = localStorage.getItem("token");
 
-    if (!token) {
+    if (!token) 
+    {
       setApiError("Please login first");
       return;
     }
@@ -66,8 +72,10 @@ export default function AddTask({ Added }: Props) {
           },
           body: JSON.stringify({
             title: title.trim(),
+            description: description.trim() || null,
             status,
             priority,
+            dueDate: dueDate || null,
           }),
         }
       );
@@ -100,6 +108,8 @@ export default function AddTask({ Added }: Props) {
 
   function clearForm() {
     setTitle("");
+    setDescription("");
+    setDueDate("");
     setPriority("");
     setStatus("");
 
@@ -126,7 +136,12 @@ export default function AddTask({ Added }: Props) {
         </p>
       )}
 
+      <label htmlFor="title" className="block font-semibold mb-1">
+        Title
+      </label>
+
       <input
+        id="title"
         type="text"
         value={title}
         onChange={(e) => {
@@ -135,8 +150,7 @@ export default function AddTask({ Added }: Props) {
           setApiError("");
         }}
         placeholder="Task title"
-        className="w-full mb-1 bg-[#8ebd55] border p-2 rounded-md"
-      />
+        className="w-full mb-2 bg-[#8ebd55] border p-2 rounded-md"/>
 
       {titleError && (
         <p className="text-red-600 mb-3">
@@ -144,15 +158,48 @@ export default function AddTask({ Added }: Props) {
         </p>
       )}
 
+      <label htmlFor="description" className="block font-semibold mb-2">
+        Description
+      </label>
+
+      <textarea
+        id="description"
+        value={description}
+        onChange={(e) => {
+          setDescription(e.target.value);
+          setApiError("");
+        }}
+        placeholder="Task description"
+        rows={3}
+        className="w-full mb-3 bg-white border p-2 rounded-md"/>
+
+      <label htmlFor="dueDate" className="block font-semibold mb-1">
+        Due Date
+      </label>
+
+      <input
+        id="dueDate"
+        type="date"
+        value={dueDate}
+        onChange={(e) => {
+          setDueDate(e.target.value);
+          setApiError("");
+        }}
+        className="w-full mb-3 bg-white border p-2 rounded-md"/>
+
+      <label htmlFor="priority" className="block font-semibold mb-2">
+        Priority
+      </label>
+
       <select
+        id="priority"
         value={priority}
         onChange={(e) => {
           setPriority(e.target.value as prioritytype);
           setPrioError("");
           setApiError("");
         }}
-        className="border rounded-md p-2 w-full bg-[#4e9cad] mb-1"
-      >
+        className="border rounded-md p-2 w-full bg-[#4e9cad] mb-3">
         <option value="">Select priority</option>
         <option value="low">Low</option>
         <option value="medium">Medium</option>
@@ -160,20 +207,25 @@ export default function AddTask({ Added }: Props) {
       </select>
 
       {prioError && (
-        <p className="text-red-600 mb-3">
+        <p className="text-red-600 mb-1">
           {prioError}
         </p>
       )}
 
+      <label htmlFor="status" className="block font-semibold mb-3">
+        Status
+      </label>
+
       <select
+        id="status"
         value={status}
         onChange={(e) => {
           setStatus(e.target.value as statustype);
           setStatusError("");
           setApiError("");
         }}
-        className="border rounded-md p-2 w-full mb-1 bg-[#d8e080]"
-      >
+        className="border rounded-md p-2 w-full mb-1 bg-[#d8e080]">
+
         <option value="">Select status</option>
         <option value="pending">Pending</option>
         <option value="completed">Completed</option>
@@ -189,21 +241,17 @@ export default function AddTask({ Added }: Props) {
         <button
           type="submit"
           disabled={loading}
-          className={
-            loading
-              ? "bg-yellow-400 text-white px-5 py-2 rounded-md"
-              : "bg-blue-500 text-white px-5 py-2 rounded-md"
-          }
-        >
-          {loading ? "submitting" : "submit"}
+          className={ loading ? "bg-yellow-400 text-white px-5 py-2 rounded-md"
+              : "bg-blue-500 text-white px-5 py-2 rounded-md" }>
+
+          {loading ? "Submitting..." : "Submit"}
         </button>
 
         <button
           type="button"
           onClick={clearForm}
-          className="bg-green-600 text-white px-5 py-2 rounded-md"
-        >
-          Clear
+          className="bg-green-600 text-white px-5 py-2 rounded-md">
+          Cancel
         </button>
       </div>
     </form>
