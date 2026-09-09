@@ -1,6 +1,4 @@
-
 import "dotenv/config";
-
 import express from "express";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
@@ -20,20 +18,21 @@ router.post("/register", async (req, res) => {
     const { name, email, password } = req.body;
 
     if (!name || !email || !password)
-       {
+    {
       return res.status(400).json({
         message: "Name, email and password are required",
       });
     }
 
     if (name.trim().length < 2) 
-      {
+    {
       return res.status(400).json({
         message: "Name should have atleast 2 characters",
       });
     }
 
-    if (password.length < 6) {
+    if (password.length < 6) 
+    {
       return res.status(400).json({
         message: "Password must be at least 6 characters",
       });
@@ -46,8 +45,10 @@ router.post("/register", async (req, res) => {
         email: cleanEmail,
       },
     });
+
 // in case of duplicate email 
-    if (found) {
+    if (found)
+    {
       return res.status(409).json({
         message: "Email is already registered",
       });
@@ -75,7 +76,9 @@ router.post("/register", async (req, res) => {
       user: safeUser,
     });
 
-  } catch (error) {
+  } 
+  catch (error)
+  {
     console.error(error);
 
     return res.status(500).json({
@@ -102,7 +105,8 @@ router.post("/login", async (req, res) => {
       },
     });
 
-    if (!user) {
+    if (!user) 
+    {
       return res.status(401).json({
         message: "Invalid email or password",
       });
@@ -110,7 +114,8 @@ router.post("/login", async (req, res) => {
 
     const match = await bcrypt.compare(password, user.password);
 
-    if (!match) {
+    if (!match) 
+    {
       return res.status(401).json({
         message: "Invalid email or password",
       });
@@ -140,8 +145,9 @@ router.post("/login", async (req, res) => {
     });
 
   } 
-  catch (error) {
-    console.error("LOGIN ERROR : ", error);
+  catch (error) 
+  {
+    console.error("error ", error);
 
     return res.status(500).json({
       message: "Internal server error",

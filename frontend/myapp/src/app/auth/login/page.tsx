@@ -18,7 +18,8 @@ export default function LoginPage() {
 
     setError("");
 
-    if (!email.trim() || !password) {
+    if (!email.trim() || !password) 
+    {
       setError("Email and password are required");
       return;
     }
@@ -42,7 +43,8 @@ export default function LoginPage() {
 
       const data = await response.json();
 
-      if (!response.ok) {
+      if (!response.ok) 
+      {
         setError(data.message || "Login failed");
         return;
       }
@@ -52,11 +54,14 @@ export default function LoginPage() {
 
       router.push("/tasks");
 
-    } catch (error) {
-      console.log("Error:", error);
+    } 
+    catch (error)
+     {
+      console.log("Error ", error);
       setError("Unable to connect to the server");
 
-    } finally {
+    }
+    finally {
       setLoading(false);
     }
   };
