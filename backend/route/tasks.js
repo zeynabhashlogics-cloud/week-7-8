@@ -8,8 +8,8 @@ const router = express.Router();
 const adapter = new PrismaPg({
   connectionString: process.env.DATABASE_URL,
 });
-
 const prisma = new PrismaClient({ adapter });
+
 
 router.get("/", authMiddleware, async (req, res) => {
   try {
@@ -19,6 +19,7 @@ router.get("/", authMiddleware, async (req, res) => {
    {
     userId:req.user.id,
    };
+
   if (search)
   {
     where.title ={
@@ -103,7 +104,7 @@ router.post("/", authMiddleware, async (req, res) => {
       message: "server error",
     });
   }
-  
+
 });
 
 router.put("/:id", authMiddleware, async (req, res) => {
@@ -163,11 +164,9 @@ router.put("/:id", authMiddleware, async (req, res) => {
         ...(status !== undefined && {
           status: status.trim(),
         }),
-
         ...(priority !== undefined && {
           priority: priority.trim(),
         }),
-
         ...(dueDate !== undefined && {
           dueDate: dueDate
             ? new Date(dueDate)
@@ -184,7 +183,7 @@ router.put("/:id", authMiddleware, async (req, res) => {
     console.error(error);
 
     res.status(500).json({
-      message: "Internal server error",
+      message: "server error",
     });
   }
 });
@@ -193,7 +192,8 @@ router.delete("/:id", authMiddleware, async (req, res) => {
   try {
     const id = Number(req.params.id);
 
-    if (Number.isNaN(id)) {
+    if (Number.isNaN(id)) 
+      {
       return res.status(400).json({
         message: "Invalid task ID",
       });
@@ -221,11 +221,13 @@ router.delete("/:id", authMiddleware, async (req, res) => {
       message: "Task deleted successfully",
     });
 
-  } catch (error) {
+  } 
+  catch (error)
+   {
     console.error(error);
 
     res.status(500).json({
-      message: "Internal server error",
+      message: "server error",
     });
   }
 });

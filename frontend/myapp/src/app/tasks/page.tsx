@@ -153,12 +153,12 @@ export default function TaskPage() {
       newTask.title.toLowerCase().includes(search.trim().toLowerCase());
 
     const matchesStatus = !statusFilter || newTask.status === statusFilter;
-
     const matchesPriority = !priorityFilter || newTask.priority === priorityFilter;
 
     if (matchesSearch && matchesStatus && matchesPriority) 
     {
-      setTasks((prev) => {
+      setTasks((prev) => 
+        {
         const newTasks = [...prev, newTask];
         setIndex(newTasks.length - 1);
         return newTasks;
@@ -181,7 +181,9 @@ export default function TaskPage() {
           task.id === updatedTask.id ? updatedTask : task
         )
       );
-    } else {
+    } 
+    else 
+    {
       setTasks((prev) =>
         prev.filter((task) => task.id !== updatedTask.id)
       );
@@ -368,24 +370,18 @@ export default function TaskPage() {
               <p className="mb-2 bg-yellow-100 w-[200px] py-1 mx-auto rounded-lg text-xs font-semibold">
                 Status: {tasks[index].status}
               </p>
-
               <p className="mb-2 bg-yellow-100 py-1 w-[200px] mx-auto rounded-lg text-xs font-semibold">
                 Priority: {tasks[index].priority}
               </p>
-
               <p className="mb-2 bg-yellow-100 py-1 mx-auto rounded-lg w-[200px] text-xs font-semibold">
                 Title: {tasks[index].title}
               </p>
-
               <p className="mb-2 bg-yellow-100 py-1 mx-auto rounded-lg w-[200px] text-xs font-semibold">
               Due date: {tasks[index].dueDate ? new Date(tasks[index].dueDate).toLocaleDateString() : "no due date"}
               </p>
-              
-
               <p className="mb-2 bg-yellow-100 py-1 mx-auto rounded-lg w-[200px] text-xs font-semibold">
                  Description: {tasks[index].description || "No description"}
               </p>
-
               <p className="bg-yellow-100 py-1 mx-auto rounded-lg w-[200px] text-xs font-semibold">
               Created at: {new Date(tasks[index].createdAt).toLocaleDateString()}
                </p>
