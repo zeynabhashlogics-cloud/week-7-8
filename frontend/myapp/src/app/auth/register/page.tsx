@@ -1,4 +1,3 @@
-
 "use client";
 
 import { FormEvent, useState } from "react";
@@ -11,7 +10,6 @@ export default function RegisterPage() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
   const [loading, setLoading] = useState(false);
@@ -21,7 +19,6 @@ export default function RegisterPage() {
 
     setError("");
     setSuccess("");
-// before sending it to the backend the frontend validation happens here
     
     if (!name.trim() || !email.trim() || !password) {
       setError("Name, email, and password are required");
@@ -33,7 +30,6 @@ export default function RegisterPage() {
       setError("Name must be at least 2 characters");
       return;
     }
-
     if (password.length < 6) {
       setError("Password must be at least 6 characters");
       return;
@@ -42,7 +38,6 @@ export default function RegisterPage() {
     setLoading(true);
 
     try {
-      // 5. user submits the form and data is sent to backend post here
       const response = await fetch(
         `${process.env.NEXT_PUBLIC_API_URL}/auth/register`,
         {
@@ -68,7 +63,6 @@ export default function RegisterPage() {
       setSuccess(
         "Registration successful!"
       );
-
       setTimeout(() => 
         {
         router.push("/auth/login");

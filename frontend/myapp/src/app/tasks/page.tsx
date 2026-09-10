@@ -9,11 +9,9 @@ import AddTask from "../components/AddTask";
 export default function TaskPage() {
   const [tasks, setTasks] = useState<Task[]>([]);
   const [index, setIndex] = useState(0);
-
   const [initialLoading, setInitialLoading] = useState(true);
   const [error, setError] = useState("");
   const [loggedIn, setLoggedIn] = useState(false);
-
   const [search, setSearch] = useState("");
   const [searchInput, setSearchInput] = useState("");
   const [statusFilter, setStatusFilter] = useState("");
@@ -29,7 +27,6 @@ export default function TaskPage() {
       setInitialLoading(false);
       return;
     }
-
     setLoggedIn(true);
 
     if (!url) 
@@ -38,7 +35,6 @@ export default function TaskPage() {
       setInitialLoading(false);
       return;
     }
-
     try {
       setError("");
 
@@ -48,19 +44,16 @@ export default function TaskPage() {
       {
         params.append("search", search.trim());
       }
-
       if (statusFilter) 
       {
         params.append("status", statusFilter);
       }
-
       if (priorityFilter) 
       {
         params.append("priority", priorityFilter);
       }
 
       const queryString = params.toString();
-
       const response = await fetch(
         `${url}/tasks${queryString ? `?${queryString}` : ""}`,
         {
@@ -71,8 +64,8 @@ export default function TaskPage() {
       );
 
       const data = await response.json();
-
-      if (!response.ok) {
+      if (!response.ok) 
+        {
         throw new Error(data.message || "Failed to fetch tasks.");
       }
 
@@ -120,15 +113,12 @@ export default function TaskPage() {
       }
 
       const newTasks = tasks.filter((task) => task.id !== id);
-
       setTasks(newTasks);
 
       if (newTasks.length === 0)
       {
-  
         setIndex(0);
       } 
-
       else if (index >= newTasks.length)
       {
         setIndex(newTasks.length - 1);
@@ -150,7 +140,6 @@ export default function TaskPage() {
       setIndex(index + 1);
     }
   }
-
   function previous() 
   {
     if (index > 0) 
@@ -184,7 +173,6 @@ export default function TaskPage() {
       updatedTask.title.toLowerCase().includes(search.trim().toLowerCase());
 
     const matchesStatus = !statusFilter || updatedTask.status === statusFilter;
-
     const matchesPriority = !priorityFilter || updatedTask.priority === priorityFilter;
 
     if (matchesSearch && matchesStatus && matchesPriority) {
@@ -206,7 +194,6 @@ export default function TaskPage() {
   const totalTasks = tasks.length;
 
   const completedTasks = tasks.filter((task) => task.status === "completed").length;
-
   const pendingTasks = tasks.filter((task) => task.status === "pending" ).length;
 
   if (initialLoading) 

@@ -1,7 +1,7 @@
 import express from "express";
 import { PrismaClient } from "../generated/prisma/client";
 import { PrismaPg } from "@prisma/adapter-pg";
-import authMiddleware from "../middleware/authMiddleware.js";
+import authMiddleware from "../middleware/authmiddleware.js";
 
 const router = express.Router();
 
@@ -94,13 +94,16 @@ router.post("/", authMiddleware, async (req, res) => {
 
     res.status(201).json(task);
 
-  } catch (error) {
+  } 
+  catch (error) 
+  {
     console.error(error);
 
     res.status(500).json({
-      message: "Internal server error",
+      message: "server error",
     });
   }
+  
 });
 
 router.put("/:id", authMiddleware, async (req, res) => {

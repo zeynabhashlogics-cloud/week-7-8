@@ -7,11 +7,12 @@ import { PrismaPg } from "@prisma/adapter-pg";
 
 const router = express.Router();
 
-const adapter = new PrismaPg({
+const adapter = new PrismaPg
+({
   connectionString: process.env.DATABASE_URL,
 });
-
 const prisma = new PrismaClient({ adapter });
+
 
 router.post("/register", async (req, res) => {
   try {
@@ -19,21 +20,24 @@ router.post("/register", async (req, res) => {
 
     if (!name || !email || !password)
     {
-      return res.status(400).json({
+      return res.status(400).json
+      ({
         message: "Name, email and password are required",
       });
     }
 
     if (name.trim().length < 2) 
     {
-      return res.status(400).json({
+      return res.status(400).json
+      ({
         message: "Name should have atleast 2 characters",
       });
     }
 
     if (password.length < 6) 
     {
-      return res.status(400).json({
+      return res.status(400).json
+      ({
         message: "Password must be at least 6 characters",
       });
     }
@@ -49,13 +53,13 @@ router.post("/register", async (req, res) => {
 // in case of duplicate email 
     if (found)
     {
-      return res.status(409).json({
+      return res.status(409).json
+      ({
         message: "Email is already registered",
       });
     }
 
     const hash = await bcrypt.hash(password, 10);
-
     const user = await prisma.user.create({
       data: 
       {
@@ -99,7 +103,6 @@ router.post("/login", async (req, res) => {
     }
 
     const cleanEmail = email.trim().toLowerCase();
-
     const user = await prisma.user.findUnique({
       where: {
         email: cleanEmail,
@@ -129,7 +132,7 @@ router.post("/login", async (req, res) => {
       },
       process.env.JWT_SECRET,
       {
-        expiresIn: "1h",
+        expiresIn: "3d",
       }
     );
 
@@ -139,7 +142,8 @@ router.post("/login", async (req, res) => {
       email: user.email,
     };
 
-    return res.status(200).json({
+    return res.status(200).json
+    ({
       message: "Login successful",
       token,
       user: safeUser,
@@ -151,9 +155,9 @@ router.post("/login", async (req, res) => {
     console.error("error ", error);
 
     return res.status(500).json({
-      message: "Internal server error",
+      message: "server error",
+    
     });
   }
 });
-
 export default router;
