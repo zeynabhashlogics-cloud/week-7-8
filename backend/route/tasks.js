@@ -45,8 +45,7 @@ router.get("/", authMiddleware, async (req, res) => {
   catch (error) {
 
     console.error(error);
-
-    res.status(400).json({
+    res.status(500).json({
       message: "Failed to fetch tasks.",
     });
   }
@@ -111,9 +110,8 @@ router.post("/", authMiddleware, async (req, res) => {
   catch (error) 
   {
     console.error(error);
-
-    res.status(400).json({
-      message: "server error",
+    res.status(500).json({
+      message: "internal server error",
     });
   }
 
@@ -157,8 +155,7 @@ router.put("/:id", authMiddleware, async (req, res) => {
 
     const statuses = ["pending", "completed"];
     const priorities = ["low", "medium", "high"];
-     
-    // empty title validation
+    
 
     if (!title || title.trim()==="")
     {
@@ -166,7 +163,6 @@ router.put("/:id", authMiddleware, async (req, res) => {
       message :"title is required",
       });
     }
-    // title exceeding 255 characters validation
 
     if (title.trim().length > 255)
     {
@@ -220,7 +216,7 @@ router.put("/:id", authMiddleware, async (req, res) => {
     console.error(error);
 
     res.status(500).json({
-      message: "server error",
+      message: "internal server error",
     });
   }
 });

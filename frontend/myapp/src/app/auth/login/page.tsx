@@ -36,7 +36,7 @@ export default function LoginPage() {
     }
 
     setLoading(true);
-    
+
     try {
       const response = await fetch(
         `${process.env.NEXT_PUBLIC_API_URL}/auth/login`,
@@ -59,7 +59,7 @@ export default function LoginPage() {
         setError(data.message || "Login failed");
         return;
       }
-// saving the token and user info in local storage after login
+
       localStorage.setItem("token", data.token);
       localStorage.setItem("user", JSON.stringify(data.user));
 

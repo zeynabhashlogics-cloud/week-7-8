@@ -17,7 +17,6 @@ const prisma = new PrismaClient({ adapter });
 router.post("/register", async (req, res) => {
   try {
     const { name, email, password } = req.body;
-// check if the fields are strings before trim or bcrypt
 
 if (typeof name !== "string")
  {
@@ -65,7 +64,6 @@ if (typeof password !== "string")
 
 
     const cleanEmail = email.trim().toLowerCase();
-// gives us a cleaner version of mail
 
 const emailFormat = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -129,14 +127,13 @@ if (password.trim() === "")
   {
     console.error(error);
 
-
   if (error.code === "P2002") {
     return res.status(409).json({
       message: "Email is already registered",
     });
   }
 
-    return res.status(400).json({
+    return res.status(500).json({
       message: "Internal server error",
     });
   }
@@ -145,7 +142,6 @@ if (password.trim() === "")
 router.post("/login", async (req, res) => {
   try {
     const { email, password } = req.body;
-// check if the fields are strings before trim or bcrypt
 
 if (typeof email !== "string") {
   return res.status(400).json({
@@ -211,7 +207,7 @@ if (!emailFormat.test(cleanEmail)) {
       },
       process.env.JWT_SECRET,
       {
-        expiresIn: "3d",
+        expiresIn: "1d",
       }
     );
 
@@ -233,7 +229,7 @@ if (!emailFormat.test(cleanEmail)) {
   {
     console.error("error ", error);
 
-    return res.status(400).json({
+    return res.status(500).json({
       message: "Internal server error",
     
     });
