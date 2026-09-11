@@ -1,7 +1,7 @@
 import express from "express";
 import { PrismaClient } from "../generated/prisma/client";
 import { PrismaPg } from "@prisma/adapter-pg";
-import authMiddleware from "../middleware/authmiddleware.js";
+import authMiddleware from "../middleware/authMiddleware.js";
 
 const router = express.Router();
 
@@ -9,7 +9,6 @@ const adapter = new PrismaPg({
   connectionString: process.env.DATABASE_URL,
 });
 const prisma = new PrismaClient({ adapter });
-
 
 router.get("/", authMiddleware, async (req, res) => {
   try {
@@ -47,7 +46,7 @@ router.get("/", authMiddleware, async (req, res) => {
 
     console.error(error);
 
-    res.status(500).json({
+    res.status(400).json({
       message: "Failed to fetch tasks.",
     });
   }
@@ -65,6 +64,19 @@ router.post("/", authMiddleware, async (req, res) => {
       });
     }
 
+    if (!title || title.trim()==="")
+    {
+      return res.status(400).json({
+      message :"title is required",
+      });
+    }
+
+    if (title.trim().length > 255)
+    {
+      return res.status(400).json({
+        message:"title should not exceed 255 characters",
+      });
+    }
     const statuses = ["pending", "completed"];
     const priorities = ["low", "medium", "high"];
 
@@ -100,7 +112,7 @@ router.post("/", authMiddleware, async (req, res) => {
   {
     console.error(error);
 
-    res.status(500).json({
+    res.status(400).json({
       message: "server error",
     });
   }
@@ -117,6 +129,15 @@ router.put("/:id", authMiddleware, async (req, res) => {
         message: "Invalid task ID",
       });
     }
+
+
+  if (!Number.isInteger(id) || id <= 0 )
+   {
+    return res.status(400).json({
+    message: "Task ID must be a positive integer",
+  });
+   }
+
 
     const { title, description,status,priority,dueDate,} = req.body;
 
@@ -136,7 +157,23 @@ router.put("/:id", authMiddleware, async (req, res) => {
 
     const statuses = ["pending", "completed"];
     const priorities = ["low", "medium", "high"];
+     
+    // empty title validation
 
+    if (!title || title.trim()==="")
+    {
+      return res.status(400).json({
+      message :"title is required",
+      });
+    }
+    // title exceeding 255 characters validation
+
+    if (title.trim().length > 255)
+    {
+      return res.status(400).json({
+        message:"title should not exceed 255 characters",
+      });
+    }
     if (status !== undefined && !statuses.includes(status.trim()) ) 
       {
       return res.status(400).json({
@@ -199,13 +236,23 @@ router.delete("/:id", authMiddleware, async (req, res) => {
       });
     }
 
+     if (!Number.isInteger(id) || id <= 0 )
+      {
+       return res.status(400).json({
+       message: "Task ID must be a positive integer",
+     });
+      }
+
+
     const task = await prisma.tasks.findUnique({
-      where: {
+      where: 
+      {
         id,
       },
     });
 
-    if (!task || task.userId !== req.user.id) {
+    if (!task || task.userId !== req.user.id) 
+      {
       return res.status(404).json({
         message: "Task not found",
       });

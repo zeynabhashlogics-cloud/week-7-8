@@ -28,7 +28,7 @@ async function main() {
     data: [
       {
         title: "Learn Prisma",
-        Description: "Learn Prisma models, migrations, and queries.",
+        description: "Learn Prisma models and migrations.",
         status: "pending",
         priority: "high",
         dueDate: new Date("2026-09-15"),
@@ -36,7 +36,7 @@ async function main() {
       },
       {
         title: "Build API",
-        Description: "Build and test the task management API.",
+        description: "Test the task management API.",
         status: "pending",
         priority: "medium",
         dueDate: new Date("2026-09-18"),
@@ -44,7 +44,7 @@ async function main() {
       },
       {
         title: "Test database",
-        Description: "Test database operations and relationships.",
+        description: "Test database operations.",
         status: "completed",
         priority: "low",
         dueDate: new Date("2026-09-10"),

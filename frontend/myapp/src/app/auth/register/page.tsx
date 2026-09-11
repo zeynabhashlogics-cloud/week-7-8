@@ -6,7 +6,6 @@ import { useRouter } from "next/navigation";
 export default function RegisterPage() {
   const router = useRouter();
 
-  // 1.react states for entering our info on the registration form
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -20,8 +19,9 @@ export default function RegisterPage() {
     setError("");
     setSuccess("");
     
-    if (!name.trim() || !email.trim() || !password) {
-      setError("Name, email, and password are required");
+    if (!name.trim() || !email.trim() || !password) 
+      {
+      setError("Name, email and password are required");
       return;
     }
 
@@ -30,11 +30,25 @@ export default function RegisterPage() {
       setError("Name must be at least 2 characters");
       return;
     }
+
+    if (password.trim()==="")
+    {
+       setError ("password is required");
+       return;
+    }
+
     if (password.length < 6) {
       setError("Password must be at least 6 characters");
       return;
     }
 
+const emailFormat = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+if(!emailFormat.test(email.trim()))
+{
+  setError("enter a valid email");
+  return;
+}
     setLoading(true);
 
     try {

@@ -194,7 +194,6 @@ export default function TaskPage() {
   }
 
   const totalTasks = tasks.length;
-
   const completedTasks = tasks.filter((task) => task.status === "completed").length;
   const pendingTasks = tasks.filter((task) => task.status === "pending" ).length;
 
@@ -207,7 +206,8 @@ export default function TaskPage() {
     );
   }
 
-  if (!loggedIn) {
+  if (!loggedIn) 
+    {
     return (
       <main className="flex min-h-screen items-center justify-center bg-[ffffff]">
         <div className="text-center">

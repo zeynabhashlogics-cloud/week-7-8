@@ -2,7 +2,14 @@ import express from "express";
 import dotenv from "dotenv";
 import cors from "cors";
 
+const requiredEnv = ["DATABASE_URL", "JWT_SECRET", "FRONTEND_URL"];
 
+for (const name of requiredEnv) {
+  if (!process.env[name]) {
+    console.error(`Missing required environment variable: ${name}`);
+    process.exit(1);
+  }
+}
 dotenv.config();
 import authRoutes from "./route/authRoutes.js";
 import taskRoutes from "./route/tasks.js";

@@ -80,7 +80,8 @@ headers: {
 }
 ```
 
-The backend authentication middleware verifies the token:
+Configure the JWT secret: Add a strong, private secret of your choice to the backend .env file as JWT_SECRET. This secret is used to sign and verify JWTs and must not be exposed or committed to the repository.
+The backend authentication middleware verifies the token.
 
 ```js
 const decoded = jwt.verify(

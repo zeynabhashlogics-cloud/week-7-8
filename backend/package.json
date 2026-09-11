@@ -3,13 +3,12 @@
   "version": "1.0.0",
   "description": "",
   "main": "server.js",
- 
   "scripts": {
-  "dev": "tsx watch server.js",
-  "db:generate": "prisma generate",
-  "db:migrate": "prisma migrate dev",
-  "db:seed": "prisma db seed"
-   },
+    "dev": "tsx watch server.js",
+    "db:generate": "prisma generate",
+    "db:migrate": "prisma migrate dev",
+    "db:seed": "prisma db seed"
+  },
   "keywords": [],
   "author": "",
   "license": "ISC",
@@ -21,6 +20,7 @@
     "cors": "^2.8.6",
     "dotenv": "^17.4.2",
     "express": "^5.1.0",
+    "jsonwebtoken": "^9.0.3",
     "pg": "^8.23.0",
     "prisma": "^7.9.1"
   },
@@ -28,5 +28,8 @@
     "@types/bcrypt": "^6.0.0",
     "nodemon": "^3.1.14",
     "tsx": "^4.23.12"
+  },
+  "allowScripts": {
+    "prisma@7.9.1": true
   }
 }

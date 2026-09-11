@@ -13,6 +13,7 @@ export default function LoginPage() {
 
   const handleLogin = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
     setError("");
 
     if (!email.trim() || !password) 
@@ -21,7 +22,21 @@ export default function LoginPage() {
       return;
     }
 
+    if (password.trim() === "") 
+   { setError("Password is required"); 
+    return; 
+   } 
+  
+  const emailFormat = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; 
+  
+    if (!emailFormat.test(email.trim())) 
+    { 
+      setError("Enter a valid email"); 
+      return; 
+    }
+
     setLoading(true);
+    
     try {
       const response = await fetch(
         `${process.env.NEXT_PUBLIC_API_URL}/auth/login`,

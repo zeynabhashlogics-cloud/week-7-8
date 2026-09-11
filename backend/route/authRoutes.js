@@ -17,6 +17,28 @@ const prisma = new PrismaClient({ adapter });
 router.post("/register", async (req, res) => {
   try {
     const { name, email, password } = req.body;
+// check if the fields are strings before trim or bcrypt
+
+if (typeof name !== "string")
+ {
+  return res.status(400).json({
+    message: "Name must be a string",
+  });
+}
+
+if (typeof email !== "string") 
+  {
+  return res.status(400).json({
+    message: "Email must be a string",
+  });
+}
+
+if (typeof password !== "string") 
+  {
+  return res.status(400).json({
+    message: "Password must be a string",
+  });
+}
 
     if (!name || !email || !password)
     {
@@ -34,16 +56,25 @@ router.post("/register", async (req, res) => {
       });
     }
 
-    if (password.length < 6) 
-    {
-      return res.status(400).json
-      ({
-        message: "Password must be at least 6 characters",
-      });
-    }
+  if (email.trim()==="")
+  {
+    return res.status(400).json({
+      message: "email cannot be empty",
+    });
+  }
+
 
     const cleanEmail = email.trim().toLowerCase();
 // gives us a cleaner version of mail
+
+const emailFormat = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+if (!emailFormat.test(email.trim())) {
+  return res.status(400).json({
+    message: "enter a valid email",
+  });
+}
+
     const found = await prisma.user.findUnique({
       where: {
         email: cleanEmail,
@@ -59,6 +90,19 @@ router.post("/register", async (req, res) => {
       });
     }
 
+if (password.trim() === "") 
+  {
+  return res.status(400).json({
+    message: "Password is required",
+  });
+}
+ if (password.length < 6) 
+    {
+      return res.status(400).json
+      ({
+        message: "Password must be at least 6 characters",
+      });
+    }
     const hash = await bcrypt.hash(password, 10);
     const user = await prisma.user.create({
       data: 
@@ -85,7 +129,14 @@ router.post("/register", async (req, res) => {
   {
     console.error(error);
 
-    return res.status(500).json({
+
+  if (error.code === "P2002") {
+    return res.status(409).json({
+      message: "Email is already registered",
+    });
+  }
+
+    return res.status(400).json({
       message: "Internal server error",
     });
   }
@@ -94,6 +145,19 @@ router.post("/register", async (req, res) => {
 router.post("/login", async (req, res) => {
   try {
     const { email, password } = req.body;
+// check if the fields are strings before trim or bcrypt
+
+if (typeof email !== "string") {
+  return res.status(400).json({
+    message: "Email must be a string",
+  });
+}
+
+if (typeof password !== "string") {
+  return res.status(400).json({
+    message: "Password must be a string",
+  });
+}
 
     if (!email || !password) 
       {
@@ -102,7 +166,22 @@ router.post("/login", async (req, res) => {
       });
     }
 
-    const cleanEmail = email.trim().toLowerCase();
+    
+    if (email.trim() === "") {
+  return res.status(400).json({
+    message: "Email is required",
+  });
+}
+
+const cleanEmail = email.trim().toLowerCase();
+
+const emailFormat = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+if (!emailFormat.test(cleanEmail)) {
+  return res.status(400).json({
+    message: "Enter a valid email",
+  });
+}
     const user = await prisma.user.findUnique({
       where: {
         email: cleanEmail,
@@ -154,8 +233,8 @@ router.post("/login", async (req, res) => {
   {
     console.error("error ", error);
 
-    return res.status(500).json({
-      message: "server error",
+    return res.status(400).json({
+      message: "Internal server error",
     
     });
   }
